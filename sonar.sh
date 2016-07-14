@@ -25,7 +25,7 @@ do
 		FRONT=true
 		;;
 		-h|--help)
-		echo "$(basename "$0") [-h] [-sc -b] BRANCH_NAME"
+		echo "$(basename "$0") [-h] [-sc -b -f] BRANCH_NAME"
 		echo
 		echo "Calling $(basename "$0") BRANCH_NAME will do a full analysis, including coverage."
 		echo
@@ -33,6 +33,7 @@ do
 		echo
 		echo "	-sc, --skipcoverage		skip coverage analysis"
 		echo "	-b, --branch			branch to analyze"
+		echo "	-f, --front				use Front's custom sonar profile"
 		exit 0
 		;;
 		--default)
@@ -80,7 +81,12 @@ fi
 echo "Starting sonar build"
 echo
 
-mvn sonar:sonar -Dsonar.branch="$BRANCH"
+if [[ "$FRONT" = false ]]; then
+	mvn sonar:sonar -Dsonar.branch="$BRANCH"
+else
+	mvn sonar:sonar -Dsonar.profile="Barcelo_Front" -Dsonar.branch="$BRANCH"
+fi
+
 if [ "$?" -ne 0 ]; then
         echo "Sonar build unsuccessful"
         exit 1
