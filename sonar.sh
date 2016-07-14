@@ -9,6 +9,7 @@ fi
 SKIPCOVERAGE=false
 BRANCH=""
 FRONT=false
+BEEP=false
 
 while [[ $# > 0 ]]
 do
@@ -24,8 +25,11 @@ do
 		-f|--front)
 		FRONT=true
 		;;
+		-p|--beep)
+		BEEP=true
+		;;
 		-h|--help)
-		echo "$(basename "$0") [-h] [-sc -b -f] BRANCH_NAME"
+		echo "$(basename "$0") [-h] [-sc -b -f -p] BRANCH_NAME"
 		echo
 		echo "Calling $(basename "$0") BRANCH_NAME will do a full analysis, including coverage."
 		echo
@@ -33,7 +37,12 @@ do
 		echo
 		echo "	-sc, --skipcoverage		skip coverage analysis"
 		echo "	-b, --branch			branch to analyze"
-		echo "	-f, --front				use Front's custom sonar profile"
+		echo "	-f, --front			use Front's custom sonar profile"
+		echo "	-p, --beep			beep when done"
+		echo
+		echo "The script beeps upon completion." 
+		echo "If the command 'beep' does not work, 'sudo modprobe pcspkr' must be run first." 
+		echo "To make it persistent between reboots, comment out the line 'blacklist pcspkr' in '/etc/modprobe.d/blacklist.conf'."
 		exit 0
 		;;
 		--default)
@@ -92,3 +101,4 @@ if [ "$?" -ne 0 ]; then
         exit 1
 fi
 
+beep
